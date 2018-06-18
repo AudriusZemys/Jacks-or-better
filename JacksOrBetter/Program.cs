@@ -32,7 +32,7 @@ namespace JacksOrBetter
                 selection = Console.ReadLine();
                 if (!gl.checkInput(selection))
                 {
-                    Console.WriteLine("Incorrect syntax! Press enter to restart");
+                    Console.WriteLine("Incorrect syntax! Press any key to restart");
                     Console.ReadKey();
                     continue;
 
