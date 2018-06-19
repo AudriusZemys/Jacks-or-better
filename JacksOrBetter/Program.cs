@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System;
 
 namespace JacksOrBetter
 {
@@ -25,7 +20,7 @@ namespace JacksOrBetter
                 Console.WriteLine("Your cards:");
                 foreach(var card in gl.GetHand)
                 {
-                    Console.WriteLine(index.ToString() + ". " + card.Value + " OF " + card.Suit);
+                    gl.writeCard(index, card);
                     index++;
                 }
                 Console.WriteLine("Choose the positions of cards you want to redraw (without spaces). Press enter if you want to keep all cards:");
@@ -42,7 +37,7 @@ namespace JacksOrBetter
                 Console.WriteLine("Your new cards:");
                 foreach (var card in gl.GetHand)
                 {
-                    Console.WriteLine(index.ToString() + ". " + card.Value + " OF " + card.Suit);
+                    gl.writeCard(index, card);
                     index++;
                 }
                 Console.WriteLine(gl.evaluateHand(gl.GetHand).ToString());
