@@ -27,6 +27,12 @@ namespace JacksOrBetter
         private int clubSum;
         private int spadesSum;
         private List<Card> sortedHand;
+        private const int FULL_HAND = 5;
+        private const int FIRST_CARD_POS = 0;
+        private const int SECOND_CARD_POS = 1;
+        private const int THIRD_CARD_POS = 2;
+        private const int FOURTH_CARD_POS = 3;
+        private const int FIFTH_CARD_POS = 4;
 
         public HandEvaluator(Card[] hand)
         {
@@ -72,7 +78,7 @@ namespace JacksOrBetter
 
         private bool RoyalFlush()
         {
-            return (heartsSum == 5 || diamondSum == 5 || clubSum == 5 || spadesSum == 5) ?
+            return Flush() ?
                 (sortedHand.First().Value == Card.VALUE.TEN && sortedHand.Last().Value == Card.VALUE.ACE ?
                     true :
                         false) : 
@@ -81,52 +87,55 @@ namespace JacksOrBetter
 
         private bool StraightFlush()
         {
-            return (heartsSum == 5 || diamondSum == 5 || clubSum == 5 || spadesSum == 5) ?
-                (sortedHand.First().Value + 4 == sortedHand.Last().Value ?
-                    true :
-                        false) :
+            return Flush() ?
+                (Straight() ? true : false) :
                 false;
         }
 
         private bool FourOfAKind()
         {
-            return sortedHand.First().Value == sortedHand[4].Value || sortedHand[1].Value == sortedHand.Last().Value;
+            return sortedHand.First().Value == sortedHand[FIFTH_CARD_POS].Value || sortedHand[SECOND_CARD_POS].Value == sortedHand.Last().Value;
         }
 
         private bool FullHouse()
         {
-            return (sortedHand[0].Value == sortedHand[1].Value && sortedHand[2].Value == sortedHand[3].Value && sortedHand[3].Value == sortedHand[4].Value)
-                || (sortedHand[3].Value == sortedHand[4].Value && sortedHand[0].Value == sortedHand[1].Value && sortedHand[1].Value == sortedHand[2].Value);
+            return (sortedHand[FIRST_CARD_POS].Value == sortedHand[SECOND_CARD_POS].Value && sortedHand[THIRD_CARD_POS].Value == sortedHand[FOURTH_CARD_POS].Value && sortedHand[FOURTH_CARD_POS].Value == sortedHand[FIFTH_CARD_POS].Value)
+                || (sortedHand[FOURTH_CARD_POS].Value == sortedHand[FIFTH_CARD_POS].Value && sortedHand[FIRST_CARD_POS].Value == sortedHand[SECOND_CARD_POS].Value && sortedHand[SECOND_CARD_POS].Value == sortedHand[THIRD_CARD_POS].Value);
         }
 
         private bool Flush()
         {
-            return (heartsSum == 5 || diamondSum == 5 || clubSum == 5 || spadesSum == 5);
+            return (heartsSum == FULL_HAND || diamondSum == FULL_HAND || clubSum == FULL_HAND || spadesSum == FULL_HAND);
         }
 
         private bool Straight()
         {
-            return sortedHand.First().Value + 4 == sortedHand.Last().Value;
+            return sortedHand.First().Value + 1 == sortedHand[SECOND_CARD_POS].Value
+                && sortedHand[SECOND_CARD_POS].Value + 1 == sortedHand[THIRD_CARD_POS].Value
+                && sortedHand[THIRD_CARD_POS].Value + 1 == sortedHand[FOURTH_CARD_POS].Value
+                && sortedHand[FOURTH_CARD_POS].Value + 1 == sortedHand[FIFTH_CARD_POS].Value;
         }
 
         private bool ThreeOfAKind()
         {
-            return sortedHand[0].Value == sortedHand[2].Value || sortedHand[1].Value == sortedHand[3].Value || sortedHand[2].Value == sortedHand[4].Value;
+            return sortedHand[FIRST_CARD_POS].Value == sortedHand[THIRD_CARD_POS].Value 
+                || sortedHand[SECOND_CARD_POS].Value == sortedHand[FOURTH_CARD_POS].Value 
+                || sortedHand[THIRD_CARD_POS].Value == sortedHand[FIFTH_CARD_POS].Value;
         }
 
         private bool TwoPairs()
         {
-            return (sortedHand[0].Value == sortedHand[1].Value && sortedHand[2].Value == sortedHand[3].Value)
-                || (sortedHand[0].Value == sortedHand[1].Value && sortedHand[3].Value == sortedHand[4].Value)
-                || (sortedHand[1].Value == sortedHand[2].Value && sortedHand[3].Value == sortedHand[4].Value);
+            return (sortedHand[FIRST_CARD_POS].Value == sortedHand[SECOND_CARD_POS].Value && sortedHand[THIRD_CARD_POS].Value == sortedHand[FOURTH_CARD_POS].Value)
+                || (sortedHand[FIRST_CARD_POS].Value == sortedHand[SECOND_CARD_POS].Value && sortedHand[FOURTH_CARD_POS].Value == sortedHand[FIFTH_CARD_POS].Value)
+                || (sortedHand[SECOND_CARD_POS].Value == sortedHand[THIRD_CARD_POS].Value && sortedHand[FOURTH_CARD_POS].Value == sortedHand[FIFTH_CARD_POS].Value);
         }
 
         private bool JacksOrBetter()
         {
-            return (sortedHand[0].Value == sortedHand[1].Value && sortedHand[0].Value >= Card.VALUE.JACK)
-                || (sortedHand[1].Value == sortedHand[2].Value && sortedHand[1].Value >= Card.VALUE.JACK)
-                || (sortedHand[2].Value == sortedHand[3].Value && sortedHand[2].Value >= Card.VALUE.JACK)
-                || (sortedHand[3].Value == sortedHand[4].Value && sortedHand[3].Value >= Card.VALUE.JACK);
+            return (sortedHand[FIRST_CARD_POS].Value == sortedHand[SECOND_CARD_POS].Value && sortedHand[FIRST_CARD_POS].Value >= Card.VALUE.JACK)
+                || (sortedHand[SECOND_CARD_POS].Value == sortedHand[THIRD_CARD_POS].Value && sortedHand[SECOND_CARD_POS].Value >= Card.VALUE.JACK)
+                || (sortedHand[THIRD_CARD_POS].Value == sortedHand[FOURTH_CARD_POS].Value && sortedHand[THIRD_CARD_POS].Value >= Card.VALUE.JACK)
+                || (sortedHand[FOURTH_CARD_POS].Value == sortedHand[FIFTH_CARD_POS].Value && sortedHand[FOURTH_CARD_POS].Value >= Card.VALUE.JACK);
         }
     }
 }

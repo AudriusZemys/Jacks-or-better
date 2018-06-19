@@ -99,5 +99,10 @@ namespace JacksOrBetter
             }
             return true;
         }
+
+        public void writeCard(int index, Card card)
+        {
+            Console.WriteLine(index.ToString() + ". " + card.Value + " OF " + card.Suit);
+        }
     }
 }
